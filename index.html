@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+
+VisionPay Terminal V6
+
+</title>
+
+<link
+rel="stylesheet"
+href="style.css">
+
+</head>
+
+<body>
+
+<header class="header">
+
+<h1>
+
+VisionPay Terminal
+
+</h1>
+
+<p>
+
+Smart • Secure • Accessible
+
+</p>
+
+<div id="uhrzeit">
+
+00:00:00
+
+</div>
+
+</header>
+
+<section class="statusbar">
+
+<div>
+
+Tagesumsatz:
+
+<span id="tagesumsatz">
+
+0.00 €
+
+</span>
+
+</div>
+
+<div>
+
+Verkäufe:
+
+<span id="anzahlVerkaeufe">
+
+0
+
+</span>
+
+</div>
+
+<div>
+
+Systemstatus:
+
+<span id="systemStatus">
+
+Bereit
+
+</span>
+
+</div>
+
+</section>
+<section id="kassenAnsicht">
+
+<h2>
+
+Kassensystem
+
+</h2>
+
+<div class="kategorien">
+
+<button onclick="filterKategorie('Alle')">
+
+Alle
+
+</button>
+
+<button onclick="filterKategorie('Getränke')">
+
+Getränke
+
+</button>
+
+<button onclick="filterKategorie('Backwaren')">
+
+Backwaren
+
+</button>
+
+<button onclick="filterKategorie('Snacks')">
+
+Snacks
+
+</button>
+
+</div>
+
+<div id="artikelContainer">
+
+</div>
+
+<div class="warenkorb">
+
+<h2>
+
+Warenkorb
+
+</h2>
+
+<div id="warenkorb">
+
+Keine Artikel
+
+</div>
+
+<p>
+
+Artikel:
+
+<span id="anzahl">
+
+0
+
+</span>
+
+</p>
+
+<p>
+
+Gesamt:
+
+<span id="summe">
+
+0.00 €
+
+</span>
+
+</p>
+
+<p>
+
+MwSt 7 %:
+
+<span id="ust7">
+
+0.00 €
+
+</span>
+
+</p>
+
+<p>
+
+MwSt 19 %:
+
+<span id="ust19">
+
+0.00 €
+
+</span>
+
+</p>
+
+<button onclick="storno()">
+
+Artikel stornieren
+
+</button>
+
+<button onclick="zurZahlung()">
+
+Zur Zahlung
+
+</button>
+
+</div>
+
+</section>
+
+
+<section class="kundendisplay">
+
+<h2>
+
+Kundendisplay
+
+</h2>
+
+<div id="kundenInfo">
+
+Bitte Artikel auswählen
+
+</div>
+
+</section>
+<section class="verzehr">
+
+<h2>
+
+Verzehrart
+
+</h2>
+
+<select id="verzehrart">
+
+<option value="mitnehmen">
+
+🥡 Mitnehmen
+
+</option>
+
+<option value="vorort">
+
+🍽 Vor Ort
+
+</option>
+
+</select>
+
+</section>
+
+
+<section id="terminalAnsicht">
+
+<h2>
+
+VisionPay Payment Terminal
+
+</h2>
+
+<div id="zahlungsStatus">
+
+Keine Zahlung aktiv
+
+</div>
+
+<h1 id="zahlbetrag">
+
+0.00 €
+
+</h1>
+
+<select id="zahlung">
+
+<option>
+Bar
+</option>
+
+<option>
+Girocard
+</option>
+
+<option>
+Kreditkarte
+</option>
+
+<option>
+Apple Pay
+</option>
+
+<option>
+Google Pay
+</option>
+
+<option>
+NFC
+</option>
+
+</select>
+
+<div id="pinBereich">
+
+<h3>
+
+PIN Eingabe
+
+</h3>
+
+<input
+id="pinfeld"
+type="password"
+readonly>
+
+<div id="pinTastatur">
+
+</div>
+
+</div>
+
+<button onclick="zahlungAbschliessen()">
+
+Zahlung abschließen
+
+</button>
+
+<button onclick="zurKasse()">
+
+Zurück zur Kasse
+
+</button>
+
+</section>
+
+
+<section class="barrierefrei">
+
+<h2>
+
+Barrierefreiheit
+
+</h2>
+
+<button onclick="toggleSehmodus()">
+
+♿ Vision Assist
+
+</button>
+
+<button onclick="toggleHoermodus()">
+
+🦻 Visual Assist
+
+</button>
+
+<button onclick="warenkorbVorlesen()">
+
+🔊 Warenkorb vorlesen
+
+</button>
+
+</section>
+<section class="ki">
+
+<h2>
+
+Vision AI Datenschutz
+
+</h2>
+
+<div id="kiStatus">
+
+Kamera wird initialisiert...
+
+</div>
+
+</section>
+
+
+<section class="kiLog">
+
+<h2>
+
+KI Ereignisprotokoll
+
+</h2>
+
+<div id="kiProtokoll">
+
+Noch keine Ereignisse
+
+</div>
+
+</section>
+
+
+<section class="admin">
+
+<h2>
+
+Artikelverwaltung
+
+</h2>
+
+<input
+id="artikelName"
+type="text"
+placeholder="Artikelname">
+
+<input
+id="artikelPreis"
+type="number"
+step="0.01"
+placeholder="Preis">
+
+<select id="artikelSteuer">
+
+<option value="7">
+
+7 % MwSt
+
+</option>
+
+<option value="19">
+
+19 % MwSt
+
+</option>
+
+</select>
+
+<button onclick="artikelAnlegen()">
+
+Artikel speichern
+
+</button>
+
+</section>
+
+
+<section class="historie">
+
+<h2>
+
+Verkaufshistorie
+
+</h2>
+
+<div id="verkaufHistorie">
+
+Noch keine Verkäufe
+
+</div>
+
+</section>
+
+
+<section class="buchhaltung">
+
+<h2>
+
+BuchhaltungsButler
+
+</h2>
+
+<div id="butlerStatus">
+
+Nicht verbunden
+
+</div>
+
+<button onclick="butlerExport()">
+
+Tagesabschluss exportieren
+
+</button>
+
+</section>
+
+
+<section class="bon">
+
+<h2>
+
+QR Bon & Tagesabschluss
+
+</h2>
+
+<div id="qrcode">
+
+Noch kein Bon
+
+</div>
+
+<button onclick="zBon()">
+
+Z-Bon erzeugen
+
+</button>
+
+</section>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
